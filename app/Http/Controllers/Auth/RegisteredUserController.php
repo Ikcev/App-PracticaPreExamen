@@ -28,6 +28,10 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
+
+     public const HOME = '/dashboard';
+     public const REDIR = '/';
+
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
@@ -42,10 +46,12 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        event(new Registered($user));
-
-        Auth::login($user);
-
-        return redirect(RouteServiceProvider::HOME);
+        if ($user) {
+            event(new Registered($user));
+            Auth::login($user);
+            return redirect(RouteServiceProvider::HOME);
+        } else {
+            return redirect(RouteServiceProvider::REDIR)->with('error', 'El registro ha fallado');
+        }
     }
 }
