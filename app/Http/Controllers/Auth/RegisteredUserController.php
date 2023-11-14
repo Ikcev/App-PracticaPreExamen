@@ -51,7 +51,7 @@ class RegisteredUserController extends Controller
             Auth::login($user);
             return redirect(RouteServiceProvider::HOME);
         } else {
-            return redirect(RouteServiceProvider::REDIR)->with('error', 'El registro ha fallado');
+            return redirect(RouteServiceProvider::REDIR);
         }
     }
 }
